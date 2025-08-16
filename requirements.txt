@@ -1,0 +1,10 @@
+requests==2.32.3
+pandas==2.2.2
+langchain==0.2.14
+langchain-community==0.2.12
+sentence-transformers==3.0.1
+faiss-cpu==1.8.0.post1
+fastapi==0.112.1
+uvicorn==0.30.6
+confluent-kafka==2.3.0
+https://download.pytorch.org/whl/cpu/torch-2.2.0%2Bcpu-cp312-cp312-linux_x86_64.whl

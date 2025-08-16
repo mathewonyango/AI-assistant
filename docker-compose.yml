@@ -1,0 +1,42 @@
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - 11434:11434
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - kg_network
+    restart: unless-stopped
+
+  python-model:
+    build: .
+    container_name: python-model
+    ports:
+      - 8000:8000
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_URL=http://ollama:11434
+      - LLM_MODEL=phi3
+      - KAFKA_BROKER=kafka:9092
+    volumes:
+     - .:/app
+    networks:
+      - kg_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  kg_network:
+    external: true
+    name: kg_network
+
+volumes:
+  ollama_data:
